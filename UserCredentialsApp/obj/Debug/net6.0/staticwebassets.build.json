@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "VXcKc2kXZLFcREjqzVrN7phgdnht9BBRMQBC1ZFWrek=",
+  "Source": "UserCredentialsApp",
+  "BasePath": "_content/UserCredentialsApp",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
