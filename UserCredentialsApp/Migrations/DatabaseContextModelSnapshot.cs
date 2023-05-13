@@ -28,17 +28,10 @@ namespace UserCredentialsApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Password")
                         .HasColumnType("int");
 
-                    b.Property<long>("Phone")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("name")
+                    b.Property<string>("username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

@@ -11,9 +11,9 @@ namespace UserCredentialsApp.Migrations
         {
            
 
-            migrationBuilder.DropColumn(
-        name: "Email",
-        table: "userRegisters");
+        //    migrationBuilder.DropColumn(
+        //name: "Email",
+        //table: "userRegisters");
 
             migrationBuilder.DropColumn(
                    name: "Phone",
@@ -26,7 +26,7 @@ namespace UserCredentialsApp.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-          
+
             migrationBuilder.AddColumn<int>(
               name: "Email",
               table: "userRegisters",
