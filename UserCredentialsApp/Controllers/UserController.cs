@@ -23,7 +23,7 @@ namespace UserCredentialsApp.Controllers
 
         
         
-
+        //this method for user's get information
 
         [HttpGet]
 
