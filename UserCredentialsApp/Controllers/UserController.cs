@@ -70,6 +70,6 @@ namespace UserCredentialsApp.Controllers
             string strJson = JsonSerializer.Serialize(userreg, opt);
             return Ok(strJson);
 
-        }
+        }//github
     }
 }
