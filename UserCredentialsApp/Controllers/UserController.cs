@@ -48,8 +48,11 @@ namespace UserCredentialsApp.Controllers
         [HttpPost]
         public async Task<IActionResult> AddUser([FromBody] UserRegister userreg)
         {
+            Console.WriteLine("request arrived");
+           
             if (userreg == null)
             {
+                Console.WriteLine("user not found");
                 return BadRequest("Invalid user registration data.");
             }
             // userreg.id = new Guid();
@@ -68,6 +71,7 @@ namespace UserCredentialsApp.Controllers
 
             var opt = new JsonSerializerOptions() { WriteIndented = true };
             string strJson = JsonSerializer.Serialize(userreg, opt);
+            Console.WriteLine("data formatted");
             return Ok(strJson);
 
         }
