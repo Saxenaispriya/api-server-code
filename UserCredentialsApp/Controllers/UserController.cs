@@ -8,6 +8,26 @@ using UserCredentialsApp.Models;
 
 namespace UserCredentialsApp.Controllers
 {
+    class Error
+    {
+        public string message;
+        public int statusCode;
+
+        public Error(string message, int statusCode)
+        {
+            this.message = message;
+            this.statusCode = statusCode;
+        }
+
+        public string getErrorString(Error e)
+        {
+            var opt = new JsonSerializerOptions() { WriteIndented = true };
+            string strJson = JsonSerializer.Serialize(e, opt);
+            Console.WriteLine(strJson);
+            return strJson;
+        }
+    }
+
     [Route("api/[controller]")]
     public class UserController : Controller
     {
@@ -32,17 +52,15 @@ namespace UserCredentialsApp.Controllers
         {
             Trace.Write("here user is :"+username);
             var user = dbContext.userRegisters.FirstOrDefault(u => u.username == username);
-           
-
+               
             if (user == null)
             {
+                Error e = new Error("Username not found", 404);
                 return NotFound();
             }
 
             var opt = new JsonSerializerOptions() { WriteIndented = true };
             string strJson = JsonSerializer.Serialize(user, opt);
-
-           
             return Ok(strJson);
 
         }
@@ -57,16 +75,6 @@ namespace UserCredentialsApp.Controllers
                 Console.WriteLine("user not found");
                 return BadRequest("Invalid user registration data.");
             }
-            // userreg.id = new Guid();
-
-            //  var usersavedata = dbContext.userRegisters.Add(userreg);
-
-            // var opt = new JsonSerializerOptions() { WriteIndented = true };
-            // string strJson = JsonSerializer.Serialize(usersavedata, opt);
-            //// dbContext.userRegisters.Add(userreg);
-            // await dbContext.SaveChangesAsync();
-            // return Ok(strJson);
-
             userreg.id = new Guid();
             dbContext.userRegisters.Add(userreg);
             await dbContext.SaveChangesAsync();

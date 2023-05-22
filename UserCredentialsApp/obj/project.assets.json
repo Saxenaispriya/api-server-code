@@ -2673,19 +2673,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Hp\\.nuget\\packages\\": {}
+    "C:\\Users\\rvsin\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Hp\\source\\repos\\UserCredentialsApp\\UserCredentialsApp\\UserCredentialsApp.csproj",
+      "projectUniqueName": "C:\\Users\\rvsin\\source\\repos\\apigetpostcode\\UserCredentialsApp\\UserCredentialsApp.csproj",
       "projectName": "UserCredentialsApp",
-      "projectPath": "C:\\Users\\Hp\\source\\repos\\UserCredentialsApp\\UserCredentialsApp\\UserCredentialsApp.csproj",
-      "packagesPath": "C:\\Users\\Hp\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Hp\\source\\repos\\UserCredentialsApp\\UserCredentialsApp\\obj\\",
+      "projectPath": "C:\\Users\\rvsin\\source\\repos\\apigetpostcode\\UserCredentialsApp\\UserCredentialsApp.csproj",
+      "packagesPath": "C:\\Users\\rvsin\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\rvsin\\source\\repos\\apigetpostcode\\UserCredentialsApp\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Hp\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\rvsin\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -2753,7 +2753,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
       }
     }
   }
