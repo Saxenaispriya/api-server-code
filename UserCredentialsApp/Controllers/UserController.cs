@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Xml;
@@ -29,6 +30,7 @@ namespace UserCredentialsApp.Controllers
 
         public IActionResult GetUser(string username)
         {
+            Trace.Write("here user is :"+username);
             var user = dbContext.userRegisters.FirstOrDefault(u => u.username == username);
            
 
