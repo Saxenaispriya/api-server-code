@@ -9,11 +9,6 @@ namespace UserCredentialsApp.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-           
-
-        //    migrationBuilder.DropColumn(
-        //name: "Email",
-        //table: "userRegisters");
 
             migrationBuilder.DropColumn(
                    name: "Phone",

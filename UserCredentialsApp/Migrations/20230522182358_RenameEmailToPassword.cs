@@ -4,22 +4,22 @@
 
 namespace UserCredentialsApp.Migrations
 {
-    public partial class xyz : Migration
+    public partial class RenameEmailToPassword : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
-            name: "name",
+            name: "email",
             table: "userRegisters",
-            newName: "username");
+            newName: "password");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
-           name: "username",
-           table: "userRegisters",
-           newName: "name");
+            name: "password",
+            table: "userRegisters",
+            newName: "email");
         }
     }
 }

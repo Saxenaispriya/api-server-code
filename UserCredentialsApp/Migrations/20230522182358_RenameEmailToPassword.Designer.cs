@@ -12,8 +12,8 @@ using UserCredentialsApp.Models;
 namespace UserCredentialsApp.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230510190817_abc")]
-    partial class abc
+    [Migration("20230522182358_RenameEmailToPassword")]
+    partial class RenameEmailToPassword
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,17 +30,10 @@ namespace UserCredentialsApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Password")
                         .HasColumnType("int");
 
-                    b.Property<long>("Phone")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("name")
+                    b.Property<string>("username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
