@@ -8,7 +8,7 @@ namespace UserCredentialsApp.Models
         public Guid id { get; set; } 
         public string username { get; set; }
 
-        public int Password { get; set; }
+        public string Password { get; set; }
     }
 
 }

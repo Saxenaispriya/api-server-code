@@ -33,34 +33,30 @@ namespace UserCredentialsApp.Controllers
     {
 
         private DatabaseContext  dbContext;
-        //Guid newGuid = Guid.NewGuid();
-        
-     
 
         public UserController(DatabaseContext _dbcontext)
         {
             this.dbContext = _dbcontext;
         }
 
-        
-        
-        //this method for user's get information
 
         [HttpGet]
 
         public IActionResult GetUser(string username)
         {
-            Trace.Write("here user is :"+username);
+            var traceId = HttpContext.Request.Headers["trace-id"];
+            Console.WriteLine($"{traceId}" + "The request has been recieved");
             var user = dbContext.userRegisters.FirstOrDefault(u => u.username == username);
                
             if (user == null)
             {
-                Error e = new Error("Username not found", 404);
+                Error e = new Error($"{traceId}"+ "Username not found", 404);
                 return NotFound();
             }
 
             var opt = new JsonSerializerOptions() { WriteIndented = true };
             string strJson = JsonSerializer.Serialize(user, opt);
+            HttpContext.Response.Headers["Trace-id"] = traceId;
             return Ok(strJson);
 
         }
@@ -68,12 +64,13 @@ namespace UserCredentialsApp.Controllers
         [HttpPost]
         public async Task<IActionResult> AddUser([FromBody] UserRegister userreg)
         {
-            Console.WriteLine("request arrived");
+            var traceId = HttpContext.Request.Headers["TraceId"];
+            Console.WriteLine($"{traceId}" + "request arrived");
            
             if (userreg == null)
             {
-                Console.WriteLine("user not found");
-                return BadRequest("Invalid user registration data.");
+                Console.WriteLine($"{traceId}" + "user not found");
+                return BadRequest($"{traceId}" + "Invalid user registration data.");
             }
             userreg.id = new Guid();
             dbContext.userRegisters.Add(userreg);
@@ -81,7 +78,8 @@ namespace UserCredentialsApp.Controllers
 
             var opt = new JsonSerializerOptions() { WriteIndented = true };
             string strJson = JsonSerializer.Serialize(userreg, opt);
-            Console.WriteLine("data formatted");
+            Console.WriteLine($"{traceId}" + "data formatted");
+            HttpContext.Response.Headers["Trace-id"] = traceId;
             return Ok(strJson);
 
         }
