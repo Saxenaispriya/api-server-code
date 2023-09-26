@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Xml;
 using UserCredentialsApp.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace UserCredentialsApp.Controllers
 {
@@ -39,9 +42,25 @@ namespace UserCredentialsApp.Controllers
             this.dbContext = _dbcontext;
         }
 
+        [HttpGet]
+        [Route("auth")]
+        public ActionResult UserAuth(string username,int password)
+        {
+            var user = dbContext.userRegisters.FirstOrDefault(u=> u.username== username);
+
+            if(user.username==username && user.Password==password)
+            {
+                return Ok(true);
+            }
+
+            return Ok(false);
+        }
+
+
+
 
         [HttpGet]
-
+        [Route("id")]
         public IActionResult GetUser(string username)
         {
             var traceId = HttpContext.Request.Headers["trace-id"];
@@ -60,6 +79,7 @@ namespace UserCredentialsApp.Controllers
             return Ok(strJson);
 
         }
+
 
         [HttpPost]
         public async Task<IActionResult> AddUser([FromBody] UserRegister userreg)
@@ -81,7 +101,89 @@ namespace UserCredentialsApp.Controllers
             Console.WriteLine($"{traceId}" + "data formatted");
             HttpContext.Response.Headers["Trace-id"] = traceId;
             return Ok(strJson);
-
         }
+
+
+        [HttpPut]
+        public async Task<IActionResult> updateUser(Guid id, [FromBody] UserRegister updatedUser)
+        {
+            var traceId = HttpContext.Request.Headers["TraceId"];
+            Console.WriteLine($"{traceId}" + " PUT request arrived");
+
+            if (updatedUser == null)
+            {
+                Console.WriteLine($"{traceId}" + " User data not provided");
+                return BadRequest($"{traceId}" + " Invalid user data.");
+            }
+            var existingUser = await dbContext.userRegisters.FindAsync(id);
+
+            if (existingUser == null)
+            {
+                Console.WriteLine($"{traceId}" + " User not found");
+                return NotFound($"{traceId}" + " User not found.");
+            }
+
+            existingUser.username = updatedUser.username;
+            existingUser.Password = updatedUser.Password;
+
+            dbContext.userRegisters.Update(existingUser);
+            await dbContext.SaveChangesAsync();
+
+            var res= new JsonSerializerOptions() { WriteIndented = true };
+            string strjson = JsonSerializer.Serialize(existingUser,res);
+            Console.WriteLine($"{traceId}" + " User data updated");
+
+            HttpContext.Response.Headers["Trace-id"] = traceId;
+
+            return Ok(strjson);
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UserUpdatedpatch(Guid id, [FromBody] UserRegister userreg)
+        {
+            
+
+            var traceId = HttpContext.Request.Headers["TraceId"];
+
+            if (userreg == null)
+            {
+                Console.WriteLine($"{traceId}" + " Patch request arrived");
+                return BadRequest("Patch Request body is empty");
+            }
+
+            var patchvar = await dbContext.userRegisters.FindAsync(id);
+
+            if (patchvar == null)
+            {
+                Console.WriteLine($"{traceId}" + " User not found");
+                return NotFound($"{traceId}" + " User not found.");
+            }
+
+            if(userreg.username !=null)
+            {
+                patchvar.username = userreg.username;
+            }
+            if(userreg.Password != 0)
+            {
+                patchvar.Password = userreg.Password;
+            } 
+           
+
+            //if(!ModelState.IsValid)
+            //{
+            //    Console.WriteLine($"{traceId} JSON Patch Errors:");
+            //    foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+            //    {
+            //        Console.WriteLine($"{traceId} - {error.ErrorMessage}");
+            //    }
+            //    return BadRequest("Invalid JSON Patch operations.");
+
+            //}
+            // Save changes to the database
+            await dbContext.SaveChangesAsync();
+
+            return Ok(patchvar);
+        }
+
     }
 }
