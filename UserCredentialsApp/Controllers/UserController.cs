@@ -44,7 +44,7 @@ namespace UserCredentialsApp.Controllers
 
        
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "User")]
         public IActionResult GetUser(string username)
         {
             var traceId = HttpContext.Request.Headers["trace-id"];
@@ -66,6 +66,7 @@ namespace UserCredentialsApp.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> AddUser([FromBody] UserRegister userreg)
         {
             var traceId = HttpContext.Request.Headers["TraceId"];

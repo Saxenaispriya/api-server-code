@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
+using UserCredentialsApp.Models;
 
 namespace UserCredentialsApp.Controllers
 {
@@ -25,7 +28,7 @@ namespace UserCredentialsApp.Controllers
 
             if (user != null)
             {
-                if (user.UserName.Equals("test@email.com") && user.Password.Equals("a"))
+                if ((user.UserName.Equals("ravi@gmail.com") || user.UserName.Equals("priya@gmail.com")) && user.Password.Equals("a"))
                 {
                     var issuer = configuration["Jwt:Issuer"];
                     var audience = configuration["Jwt:Audience"];
@@ -35,11 +38,19 @@ namespace UserCredentialsApp.Controllers
                         SecurityAlgorithms.HmacSha512Signature
                     );
 
-                    var subject = new ClaimsIdentity(new[]
+                    List<Claim> subjects = new List<Claim>();
+                    subjects.Add(new Claim(JwtRegisteredClaimNames.Sub, user.UserName));
+                    subjects.Add(new Claim(JwtRegisteredClaimNames.Email, user.UserName));
+
+                    if (user.UserName.Equals("ravi@gmail.com"))
                     {
-                        new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                        new Claim(JwtRegisteredClaimNames.Email, user.UserName),
-                    });
+                        subjects.Add(new Claim(ClaimTypes.Role,"Administrator"));
+                    } else
+                    {
+                        subjects.Add(new Claim(ClaimTypes.Role, "User"));
+                    }
+
+                    var subject = new ClaimsIdentity(subjects);
 
                     var expires = DateTime.UtcNow.AddMinutes(10);
 
@@ -59,6 +70,8 @@ namespace UserCredentialsApp.Controllers
                     return Ok(jwtToken);
                 }
             }
+           
+            
 
             return response;
         }
