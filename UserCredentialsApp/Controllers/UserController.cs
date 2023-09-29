@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -42,25 +42,9 @@ namespace UserCredentialsApp.Controllers
             this.dbContext = _dbcontext;
         }
 
+       
         [HttpGet]
-        [Route("auth")]
-        public ActionResult UserAuth(string username,int password)
-        {
-            var user = dbContext.userRegisters.FirstOrDefault(u=> u.username== username);
-
-            if(user.username==username && user.Password==password)
-            {
-                return Ok(true);
-            }
-
-            return Ok(false);
-        }
-
-
-
-
-        [HttpGet]
-        [Route("id")]
+        [Authorize(Roles = "User")]
         public IActionResult GetUser(string username)
         {
             var traceId = HttpContext.Request.Headers["trace-id"];
@@ -82,6 +66,7 @@ namespace UserCredentialsApp.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> AddUser([FromBody] UserRegister userreg)
         {
             var traceId = HttpContext.Request.Headers["TraceId"];
@@ -92,7 +77,7 @@ namespace UserCredentialsApp.Controllers
                 Console.WriteLine($"{traceId}" + "user not found");
                 return BadRequest($"{traceId}" + "Invalid user registration data.");
             }
-            userreg.id = new Guid();
+            userreg.Id = new Guid();
             dbContext.userRegisters.Add(userreg);
             await dbContext.SaveChangesAsync();
 
@@ -163,7 +148,7 @@ namespace UserCredentialsApp.Controllers
             {
                 patchvar.username = userreg.username;
             }
-            if(userreg.Password != 0)
+            if(userreg.Password != null)
             {
                 patchvar.Password = userreg.Password;
             } 
